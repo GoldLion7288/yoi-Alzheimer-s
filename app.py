@@ -114,6 +114,35 @@ def handle_typing(data):
     user_data = online_users.get(request.sid, {'username': 'Anonymous', 'avatar': ''})
     emit('user_typing', {'username': user_data['username']}, broadcast=True, include_self=False)
 
+@socketio.on('private_message')
+def handle_private_message(data):
+    """Handle private/direct messages between users"""
+    sender_data = online_users.get(request.sid)
+    if not sender_data:
+        return
+
+    target_username = data.get('to', '')
+    message_text = data.get('text', '')
+
+    if not target_username or not message_text:
+        return
+
+    # Find the target user's socket ID
+    target_sid = None
+    for sid, user_data in online_users.items():
+        if user_data['username'].lower() == target_username.lower():
+            target_sid = sid
+            break
+
+    if target_sid:
+        # Send the private message to the target user
+        emit('private_message', {
+            'from': sender_data['username'],
+            'fromAvatar': sender_data['avatar'],
+            'text': message_text,
+            'timestamp': datetime.now().strftime('%H:%M')
+        }, room=target_sid)
+
 # Import request for session ID access
 from flask import request
 

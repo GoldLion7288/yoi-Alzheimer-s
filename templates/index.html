@@ -775,122 +775,544 @@
             background: rgba(100, 181, 246, 0.25);
             border: 1px solid rgba(100, 181, 246, 0.4);
             border-radius: 50%;
-            width: 36px;
-            height: 36px;
+            width: 40px;
+            height: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             z-index: 500;
             transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(100, 181, 246, 0.3);
         }
 
         .online-users-toggle:hover {
-            background: rgba(100, 181, 246, 0.4);
+            background: rgba(100, 181, 246, 0.5);
             transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(100, 181, 246, 0.5);
         }
 
         .online-users-toggle ion-icon {
-            font-size: 18px;
+            font-size: 20px;
             color: white;
         }
 
         .online-users-toggle .count {
             position: absolute;
-            top: -4px;
-            right: -4px;
-            background: #ff6b6b;
+            top: -6px;
+            right: -6px;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a5a);
             color: white;
-            font-size: 9px;
-            padding: 1px 4px;
-            border-radius: 8px;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 10px;
             font-weight: 600;
-            min-width: 14px;
+            min-width: 18px;
             text-align: center;
+            box-shadow: 0 2px 8px rgba(255, 107, 107, 0.4);
         }
 
         .online-users-sidebar {
             position: fixed;
             top: 0;
-            right: -200px;
-            width: 180px;
+            right: -320px;
+            width: 300px;
             height: 100%;
-            background: rgba(20, 20, 35, 0.98);
-            backdrop-filter: blur(20px);
-            border-left: 1px solid rgba(255, 255, 255, 0.1);
-            z-index: 900;
-            transition: right 0.3s ease;
-            padding: 60px 12px 12px;
-            overflow-y: auto;
+            background: rgba(15, 15, 25, 0.98);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border-left: 1px solid rgba(100, 181, 246, 0.2);
+            z-index: 1100;
+            transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            box-shadow: -10px 0 40px rgba(0, 0, 0, 0.5);
         }
 
         .online-users-sidebar.show {
             right: 0;
         }
 
-        .online-users-sidebar h4 {
-            color: #64b5f6;
-            font-size: 12px;
-            margin-bottom: 12px;
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
             align-items: center;
-            gap: 6px;
-            font-weight: 600;
+            justify-content: space-between;
+            background: rgba(100, 181, 246, 0.05);
         }
 
-        .online-users-sidebar h4 ion-icon {
-            font-size: 14px;
+        .sidebar-header h4 {
+            color: #64b5f6;
+            font-size: 16px;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
         }
 
-        .online-users-sidebar .close-btn {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            background: none;
+        .sidebar-header h4 ion-icon {
+            font-size: 20px;
+        }
+
+        .sidebar-header .close-btn {
+            background: rgba(255, 255, 255, 0.1);
             border: none;
-            color: #888;
-            font-size: 18px;
+            color: #e0e0e0;
+            font-size: 20px;
             cursor: pointer;
-            padding: 0;
+            padding: 8px;
             line-height: 1;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+        }
+
+        .sidebar-header .close-btn:hover {
+            background: rgba(255, 107, 107, 0.3);
+            color: #ff6b6b;
+            transform: rotate(90deg);
+        }
+
+        .sidebar-search {
+            padding: 15px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .sidebar-search input {
+            width: 100%;
+            padding: 10px 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            color: #e0e0e0;
+            font-size: 13px;
+            transition: all 0.2s ease;
+        }
+
+        .sidebar-search input:focus {
+            outline: none;
+            border-color: rgba(100, 181, 246, 0.5);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 15px rgba(100, 181, 246, 0.2);
+        }
+
+        .sidebar-search input::placeholder {
+            color: #666;
+        }
+
+        .online-users-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px;
+        }
+
+        .online-users-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .online-users-list::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .online-users-list::-webkit-scrollbar-thumb {
+            background: rgba(100, 181, 246, 0.3);
+            border-radius: 3px;
+        }
+
+        .online-users-list::-webkit-scrollbar-thumb:hover {
+            background: rgba(100, 181, 246, 0.5);
         }
 
         .online-user-item {
             display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 6px 8px;
-            border-radius: 8px;
-            margin-bottom: 4px;
+            gap: 12px;
+            padding: 12px 15px;
+            border-radius: 12px;
+            margin-bottom: 6px;
             background: rgba(255, 255, 255, 0.03);
-            transition: background 0.2s ease;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            position: relative;
         }
 
         .online-user-item:hover {
-            background: rgba(255, 255, 255, 0.08);
+            background: rgba(100, 181, 246, 0.15);
+            transform: translateX(-3px);
+        }
+
+        .online-user-item:hover .dm-btn {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .online-user-item.self {
+            background: rgba(100, 181, 246, 0.1);
+            border: 1px solid rgba(100, 181, 246, 0.2);
+        }
+
+        .online-user-item .avatar-wrapper {
+            position: relative;
+            flex-shrink: 0;
         }
 
         .online-user-item img {
-            width: 24px;
-            height: 24px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.2s ease;
+        }
+
+        .online-user-item:hover img {
+            border-color: rgba(100, 181, 246, 0.5);
+        }
+
+        .online-user-item .status {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 12px;
+            height: 12px;
+            background: #4caf50;
+            border-radius: 50%;
+            border: 2px solid rgba(15, 15, 25, 0.98);
+            box-shadow: 0 0 8px rgba(76, 175, 80, 0.5);
+        }
+
+        .online-user-item .user-info {
+            flex: 1;
+            min-width: 0;
         }
 
         .online-user-item .name {
             color: #e0e0e0;
-            font-size: 11px;
+            font-size: 14px;
+            font-weight: 500;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            display: block;
+        }
+
+        .online-user-item .user-status-text {
+            color: #4caf50;
+            font-size: 11px;
+            margin-top: 2px;
+        }
+
+        .online-user-item .dm-btn {
+            background: linear-gradient(135deg, #64b5f6, #42a5f5);
+            border: none;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            cursor: pointer;
+            opacity: 0;
+            transform: translateX(10px);
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: 500;
+        }
+
+        .online-user-item .dm-btn:hover {
+            background: linear-gradient(135deg, #42a5f5, #2196f3);
+            transform: translateX(0) scale(1.05);
+            box-shadow: 0 4px 15px rgba(66, 165, 245, 0.4);
+        }
+
+        .online-user-item .dm-btn ion-icon {
+            font-size: 14px;
+        }
+
+        .sidebar-footer {
+            padding: 15px 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .sidebar-footer .online-count {
+            color: #888;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        .sidebar-footer .online-count span {
+            color: #4caf50;
+            font-weight: 600;
+        }
+
+        /* DM Modal */
+        .dm-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1200;
+            padding: 20px;
+        }
+
+        .dm-modal.show {
+            display: flex;
+        }
+
+        .dm-chat {
+            width: 100%;
+            max-width: 500px;
+            height: 70vh;
+            max-height: 600px;
+            background: rgba(20, 20, 35, 0.98);
+            backdrop-filter: blur(25px);
+            border-radius: 20px;
+            border: 1px solid rgba(100, 181, 246, 0.2);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            animation: dmSlideIn 0.3s ease;
+        }
+
+        @keyframes dmSlideIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .dm-header {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(100, 181, 246, 0.05);
+        }
+
+        .dm-header img {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: 2px solid rgba(100, 181, 246, 0.3);
+        }
+
+        .dm-header .dm-user-info {
             flex: 1;
         }
 
-        .online-user-item .status {
+        .dm-header .dm-user-name {
+            color: #e0e0e0;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .dm-header .dm-user-status {
+            color: #4caf50;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .dm-header .dm-user-status::before {
+            content: '';
             width: 6px;
             height: 6px;
             background: #4caf50;
             border-radius: 50%;
-            flex-shrink: 0;
+        }
+
+        .dm-header .close-dm {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: #e0e0e0;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .dm-header .close-dm:hover {
+            background: rgba(255, 107, 107, 0.3);
+            color: #ff6b6b;
+        }
+
+        .dm-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .dm-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .dm-messages::-webkit-scrollbar-thumb {
+            background: rgba(100, 181, 246, 0.3);
+            border-radius: 3px;
+        }
+
+        .dm-message {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 16px;
+            font-size: 14px;
+            line-height: 1.4;
+            animation: messageIn 0.2s ease;
+        }
+
+        @keyframes messageIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .dm-message.sent {
+            background: linear-gradient(135deg, #64b5f6, #42a5f5);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+
+        .dm-message.received {
+            background: rgba(255, 255, 255, 0.1);
+            color: #e0e0e0;
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+        }
+
+        .dm-message .time {
+            font-size: 10px;
+            opacity: 0.7;
+            margin-top: 5px;
+            display: block;
+        }
+
+        .dm-empty {
+            text-align: center;
+            color: #666;
+            padding: 40px;
+        }
+
+        .dm-empty ion-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+            opacity: 0.3;
+        }
+
+        .dm-input-container {
+            padding: 15px 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            gap: 10px;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .dm-input-container input {
+            flex: 1;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            color: #e0e0e0;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+
+        .dm-input-container input:focus {
+            outline: none;
+            border-color: rgba(100, 181, 246, 0.5);
+            box-shadow: 0 0 15px rgba(100, 181, 246, 0.2);
+        }
+
+        .dm-input-container button {
+            background: linear-gradient(135deg, #64b5f6, #42a5f5);
+            border: none;
+            color: white;
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .dm-input-container button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(66, 165, 245, 0.4);
+        }
+
+        .dm-input-container button ion-icon {
+            font-size: 20px;
+        }
+
+        /* DM Notification Badge */
+        .dm-notification {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 8px;
+            height: 8px;
+            background: #ff6b6b;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.7; }
+        }
+
+        /* Sidebar overlay for mobile */
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1050;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-overlay.show {
+            opacity: 1;
+            visibility: visible;
         }
 
         /* Typing Indicator */
@@ -1199,12 +1621,49 @@
         <span class="count" id="onlineCount">0</span>
     </div>
 
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleOnlineUsers()"></div>
+
     <!-- Online Users Sidebar -->
     <div class="online-users-sidebar" id="onlineUsersSidebar">
-        <button class="close-btn" onclick="toggleOnlineUsers()">&times;</button>
-        <h4><ion-icon name="people"></ion-icon> Online Users</h4>
-        <div id="onlineUsersList">
+        <div class="sidebar-header">
+            <h4><ion-icon name="people"></ion-icon> Online Users</h4>
+            <button class="close-btn" onclick="toggleOnlineUsers()">&times;</button>
+        </div>
+        <div class="sidebar-search">
+            <input type="text" id="userSearchInput" placeholder="Search users..." oninput="filterUsers()">
+        </div>
+        <div class="online-users-list" id="onlineUsersList">
             <!-- Online users will appear here -->
+        </div>
+        <div class="sidebar-footer">
+            <div class="online-count"><span id="onlineCountFooter">0</span> users online</div>
+        </div>
+    </div>
+
+    <!-- DM Modal -->
+    <div class="dm-modal" id="dmModal">
+        <div class="dm-chat">
+            <div class="dm-header">
+                <img id="dmUserAvatar" src="" alt="User">
+                <div class="dm-user-info">
+                    <div class="dm-user-name" id="dmUserName">Username</div>
+                    <div class="dm-user-status">Online</div>
+                </div>
+                <button class="close-dm" onclick="closeDM()">&times;</button>
+            </div>
+            <div class="dm-messages" id="dmMessages">
+                <div class="dm-empty">
+                    <ion-icon name="chatbubbles-outline"></ion-icon>
+                    <p>Start a conversation</p>
+                </div>
+            </div>
+            <div class="dm-input-container">
+                <input type="text" id="dmInput" placeholder="Type a message..." onkeypress="handleDMKeyPress(event)">
+                <button onclick="sendDM()">
+                    <ion-icon name="send"></ion-icon>
+                </button>
+            </div>
         </div>
     </div>
 
@@ -1553,7 +2012,10 @@
 
         // Toggle online users sidebar
         function toggleOnlineUsers() {
-            document.getElementById('onlineUsersSidebar').classList.toggle('show');
+            const sidebar = document.getElementById('onlineUsersSidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.toggle('show');
+            overlay.classList.toggle('show');
         }
 
         // Update online users list
@@ -1561,21 +2023,186 @@
             onlineUsers = users;
             const container = document.getElementById('onlineUsersList');
             const countEl = document.getElementById('onlineCount');
+            const countFooterEl = document.getElementById('onlineCountFooter');
 
             countEl.textContent = users.length;
+            countFooterEl.textContent = users.length;
+
+            renderUsersList(users);
+        }
+
+        // Render users list (used by both update and filter)
+        function renderUsersList(users) {
+            const container = document.getElementById('onlineUsersList');
             container.innerHTML = '';
 
             users.forEach(user => {
                 const userEl = document.createElement('div');
-                userEl.className = 'online-user-item';
+                const isSelf = user.username === username;
+                userEl.className = 'online-user-item' + (isSelf ? ' self' : '');
                 const avatarUrl = user.avatar || `https://api.dicebear.com/7.x/initials/svg?seed=${user.username}`;
                 userEl.innerHTML = `
-                    <img src="${avatarUrl}" alt="${escapeHtml(user.username)}">
-                    <span class="name">${escapeHtml(user.username)}</span>
-                    <span class="status"></span>
+                    <div class="avatar-wrapper">
+                        <img src="${avatarUrl}" alt="${escapeHtml(user.username)}">
+                        <span class="status"></span>
+                    </div>
+                    <div class="user-info">
+                        <span class="name">${escapeHtml(user.username)}${isSelf ? ' (You)' : ''}</span>
+                        <span class="user-status-text">Online</span>
+                    </div>
+                    ${!isSelf ? `<button class="dm-btn" onclick="openDM('${escapeHtml(user.username)}', '${avatarUrl}')">
+                        <ion-icon name="chatbubble"></ion-icon>
+                        DM
+                    </button>` : ''}
                 `;
                 container.appendChild(userEl);
             });
+        }
+
+        // Filter users by search input
+        function filterUsers() {
+            const searchTerm = document.getElementById('userSearchInput').value.toLowerCase();
+            const filteredUsers = onlineUsers.filter(user =>
+                user.username.toLowerCase().includes(searchTerm)
+            );
+            renderUsersList(filteredUsers);
+        }
+
+        // DM functionality
+        let currentDMUser = null;
+        let dmMessages = {}; // Store DM messages per user
+
+        function openDM(targetUsername, avatarUrl) {
+            currentDMUser = targetUsername;
+            document.getElementById('dmUserName').textContent = targetUsername;
+            document.getElementById('dmUserAvatar').src = avatarUrl;
+            document.getElementById('dmModal').classList.add('show');
+            document.getElementById('dmInput').focus();
+
+            // Load existing messages for this user
+            loadDMMessages(targetUsername);
+        }
+
+        function closeDM() {
+            document.getElementById('dmModal').classList.remove('show');
+            currentDMUser = null;
+        }
+
+        function loadDMMessages(targetUsername) {
+            const container = document.getElementById('dmMessages');
+            const messages = dmMessages[targetUsername] || [];
+
+            if (messages.length === 0) {
+                container.innerHTML = `
+                    <div class="dm-empty">
+                        <ion-icon name="chatbubbles-outline"></ion-icon>
+                        <p>Start a conversation with ${escapeHtml(targetUsername)}</p>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = '';
+                messages.forEach(msg => {
+                    displayDMMessage(msg.text, msg.sent, msg.time);
+                });
+            }
+        }
+
+        function displayDMMessage(text, isSent, time) {
+            const container = document.getElementById('dmMessages');
+
+            // Remove empty state if present
+            const emptyState = container.querySelector('.dm-empty');
+            if (emptyState) {
+                emptyState.remove();
+            }
+
+            const msgEl = document.createElement('div');
+            msgEl.className = 'dm-message ' + (isSent ? 'sent' : 'received');
+            msgEl.innerHTML = `
+                ${escapeHtml(text)}
+                <span class="time">${time}</span>
+            `;
+            container.appendChild(msgEl);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function handleDMKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendDM();
+            }
+        }
+
+        function sendDM() {
+            const input = document.getElementById('dmInput');
+            const text = input.value.trim();
+
+            if (!text || !currentDMUser) return;
+
+            const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+            // Store message locally
+            if (!dmMessages[currentDMUser]) {
+                dmMessages[currentDMUser] = [];
+            }
+            dmMessages[currentDMUser].push({ text, sent: true, time });
+
+            // Display message
+            displayDMMessage(text, true, time);
+
+            // Send via Socket.IO
+            if (socket && isConnected) {
+                socket.emit('private_message', {
+                    to: currentDMUser,
+                    text: text
+                });
+            }
+
+            input.value = '';
+        }
+
+        // Handle incoming private messages
+        function handlePrivateMessage(data) {
+            const fromUser = data.from;
+            const text = data.text;
+            const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+            // Store message
+            if (!dmMessages[fromUser]) {
+                dmMessages[fromUser] = [];
+            }
+            dmMessages[fromUser].push({ text, sent: false, time });
+
+            // If DM modal is open with this user, display the message
+            if (currentDMUser === fromUser) {
+                displayDMMessage(text, false, time);
+            } else {
+                // Show notification
+                showDMNotification(fromUser, text);
+            }
+        }
+
+        function showDMNotification(fromUser, text) {
+            // Find user in list and add notification badge
+            const userItems = document.querySelectorAll('.online-user-item');
+            userItems.forEach(item => {
+                const nameEl = item.querySelector('.name');
+                if (nameEl && nameEl.textContent.includes(fromUser)) {
+                    // Add notification badge if not already present
+                    if (!item.querySelector('.dm-notification')) {
+                        const badge = document.createElement('span');
+                        badge.className = 'dm-notification';
+                        item.appendChild(badge);
+                    }
+                }
+            });
+
+            // Browser notification (if permitted)
+            if (Notification.permission === 'granted') {
+                new Notification(`New message from ${fromUser}`, {
+                    body: text.substring(0, 100),
+                    icon: '/favicon.ico'
+                });
+            }
         }
 
         // Handle typing indicator
@@ -1797,6 +2424,11 @@
                 // Clear session and reload
                 clearSession();
                 location.reload();
+            });
+
+            // Handle private messages
+            socket.on('private_message', (data) => {
+                handlePrivateMessage(data);
             });
         }
 
