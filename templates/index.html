@@ -1749,6 +1749,12 @@
             // Handle user blocked
             socket.on('user_blocked', (data) => {
                 alert(data.message || 'You have been blocked from this chat');
+                // Disconnect socket
+                if (socket) {
+                    socket.disconnect();
+                    socket = null;
+                }
+                isConnected = false;
                 // Clear session and show login modal
                 clearSession();
                 username = '';
@@ -1762,11 +1768,19 @@
                 document.getElementById('messageInput').disabled = true;
                 document.getElementById('sendButton').disabled = true;
                 document.getElementById('emojiBtn').disabled = true;
+
+                // Clear messages
+                document.getElementById('publicMessages').innerHTML = '';
             });
 
             // Handle user kicked
             socket.on('user_kicked', (data) => {
                 alert(data.message || 'You have been kicked from the chat');
+                // Disconnect socket
+                if (socket) {
+                    socket.disconnect();
+                    socket = null;
+                }
                 // Clear session and reload
                 clearSession();
                 location.reload();
