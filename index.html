@@ -797,15 +797,15 @@
         .online-users-sidebar {
             position: fixed;
             top: 0;
-            right: -300px;
-            width: 280px;
+            right: -200px;
+            width: 180px;
             height: 100%;
             background: rgba(20, 20, 35, 0.98);
             backdrop-filter: blur(20px);
             border-left: 1px solid rgba(255, 255, 255, 0.1);
-            z-index: 900;
+            z-index: 1100;
             transition: right 0.3s ease;
-            padding: 80px 20px 20px;
+            padding: 15px 12px 12px;
             overflow-y: auto;
         }
 
@@ -815,56 +815,76 @@
 
         .online-users-sidebar h4 {
             color: #64b5f6;
-            font-size: 16px;
-            margin-bottom: 20px;
+            font-size: 12px;
+            margin-bottom: 12px;
+            margin-top: 25px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 6px;
+            font-weight: 600;
+        }
+
+        .online-users-sidebar h4 ion-icon {
+            font-size: 14px;
         }
 
         .online-users-sidebar .close-btn {
             position: absolute;
-            top: 20px;
-            right: 20px;
-            background: none;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.1);
             border: none;
-            color: #888;
-            font-size: 24px;
+            color: #e0e0e0;
+            font-size: 16px;
             cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 6px;
+            line-height: 1;
+            transition: all 0.2s ease;
+            z-index: 1200;
+        }
+
+        .online-users-sidebar .close-btn:hover {
+            background: rgba(255, 107, 107, 0.3);
+            color: #ff6b6b;
         }
 
         .online-user-item {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 10px;
-            border-radius: 10px;
-            margin-bottom: 8px;
-            background: rgba(255, 255, 255, 0.05);
+            gap: 8px;
+            padding: 6px 8px;
+            border-radius: 8px;
+            margin-bottom: 4px;
+            background: rgba(255, 255, 255, 0.03);
             transition: background 0.2s ease;
         }
 
         .online-user-item:hover {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.08);
         }
 
         .online-user-item img {
-            width: 32px;
-            height: 32px;
+            width: 24px;
+            height: 24px;
             border-radius: 50%;
         }
 
         .online-user-item .name {
             color: #e0e0e0;
-            font-size: 14px;
+            font-size: 11px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            flex: 1;
         }
 
         .online-user-item .status {
-            width: 8px;
-            height: 8px;
+            width: 6px;
+            height: 6px;
             background: #4caf50;
             border-radius: 50%;
-            margin-left: auto;
+            flex-shrink: 0;
         }
 
         /* Typing Indicator */
