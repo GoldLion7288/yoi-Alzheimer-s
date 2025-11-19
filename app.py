@@ -1,7 +1,8 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from flask_socketio import SocketIO, emit
 from flask_cors import CORS
 from datetime import datetime
+import uuid
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your-secret-key-change-this'
@@ -87,8 +88,6 @@ def handle_get_taken_avatars():
     taken_avatars = [u['avatar'] for u in online_users.values() if u['avatar']]
     emit('taken_avatars_list', {'taken_avatars': taken_avatars})
 
-import uuid
-
 @socketio.on('message')
 def handle_message(data):
     user_data = online_users.get(request.sid, {'username': 'Anonymous', 'avatar': ''})
@@ -142,9 +141,6 @@ def handle_private_message(data):
             'text': message_text,
             'timestamp': datetime.now().strftime('%H:%M')
         }, room=target_sid)
-
-# Import request for session ID access
-from flask import request
 
 # Admin functions
 @socketio.on('admin_get_data')
