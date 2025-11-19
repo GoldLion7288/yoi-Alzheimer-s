@@ -306,12 +306,25 @@
             top: 0;
             left: 0;
             right: 0;
+            padding: 15px 20px;
         }
 
         .navbar .nav-link {
             color: #ffffff !important;
-            font-weight: 600;
-            font-size: 1.2em;
+            font-weight: 700;
+            font-size: 1.8em;
+            text-shadow: 0 0 20px rgba(100, 181, 246, 0.5);
+            letter-spacing: 1px;
+        }
+
+        .navbar .brand-title {
+            background: linear-gradient(135deg, #64b5f6, #42a5f5, #90caf9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2em;
+            font-weight: 800;
+            letter-spacing: 2px;
         }
 
         /* Glass Card Effect */
@@ -1142,7 +1155,7 @@
     <nav class="navbar navbar-expand-sm navbar-light mb-1">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link" href="#">yoi</a>
+                <a class="nav-link brand-title" href="#">Makapix Club</a>
             </li>
         </ul>
     </nav>
@@ -1731,6 +1744,32 @@
                 document.getElementById('messageInput').disabled = true;
                 document.getElementById('sendButton').disabled = true;
                 document.getElementById('emojiBtn').disabled = true;
+            });
+
+            // Handle user blocked
+            socket.on('user_blocked', (data) => {
+                alert(data.message || 'You have been blocked from this chat');
+                // Clear session and show login modal
+                clearSession();
+                username = '';
+                selectedAvatar = '';
+                document.getElementById('usernameModal').classList.remove('hidden');
+                const errorDiv = document.getElementById('usernameError');
+                errorDiv.textContent = 'You have been blocked from this chat.';
+                errorDiv.classList.add('show');
+
+                // Disable chat input
+                document.getElementById('messageInput').disabled = true;
+                document.getElementById('sendButton').disabled = true;
+                document.getElementById('emojiBtn').disabled = true;
+            });
+
+            // Handle user kicked
+            socket.on('user_kicked', (data) => {
+                alert(data.message || 'You have been kicked from the chat');
+                // Clear session and reload
+                clearSession();
+                location.reload();
             });
         }
 

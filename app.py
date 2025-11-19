@@ -14,10 +14,15 @@ socketio = SocketIO(app, cors_allowed_origins="*")
 # Store connected users and messages (in-memory, use database for production)
 online_users = {}  # {sid: {'username': name, 'avatar': url}}
 chat_messages = []
+blocked_users = []  # List of blocked usernames
 
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@app.route('/admin')
+def admin():
+    return render_template('admin.html')
 
 @socketio.on('connect')
 def handle_connect():
@@ -38,6 +43,11 @@ def handle_disconnect():
 def handle_join(data):
     username = data.get('username', 'Anonymous')
     avatar = data.get('avatar', '')
+
+    # Check if username is blocked
+    if username.lower() in [u.lower() for u in blocked_users]:
+        emit('user_blocked', {'message': 'You have been blocked from this chat'})
+        return
 
     # Check if username is already taken
     existing_usernames = [u['username'].lower() for u in online_users.values()]
@@ -107,8 +117,108 @@ def handle_typing(data):
 # Import request for session ID access
 from flask import request
 
+# Admin functions
+@socketio.on('admin_get_data')
+def handle_admin_get_data():
+    users_list = [{'username': u['username'], 'avatar': u['avatar']} for u in online_users.values()]
+    emit('admin_data', {
+        'online_users': users_list,
+        'blocked_users': blocked_users,
+        'message_count': len(chat_messages)
+    })
+
+@socketio.on('admin_block_user')
+def handle_admin_block_user(data):
+    username = data.get('username', '')
+    if not username:
+        emit('admin_action_result', {'success': False, 'message': 'Username required'})
+        return
+
+    # Add to blocked list if not already there
+    if username.lower() not in [u.lower() for u in blocked_users]:
+        blocked_users.append(username)
+
+    # Find and kick the user if online
+    sid_to_kick = None
+    for sid, user_data in online_users.items():
+        if user_data['username'].lower() == username.lower():
+            sid_to_kick = sid
+            break
+
+    if sid_to_kick:
+        # Notify the user they've been blocked
+        emit('user_blocked', {'message': 'You have been blocked by an administrator'}, room=sid_to_kick)
+        # Remove from online users
+        del online_users[sid_to_kick]
+        # Notify all users
+        users_list = [{'username': u['username'], 'avatar': u['avatar']} for u in online_users.values()]
+        emit('online_users_list', {'users': users_list}, broadcast=True)
+        emit('user_left', {'username': username, 'users': [u['username'] for u in online_users.values()]}, broadcast=True)
+
+    # Send updated data to admin
+    emit('admin_action_result', {'success': True, 'message': f'{username} has been blocked'})
+    emit('admin_blocked_update', {'blocked_users': blocked_users})
+    users_list = [{'username': u['username'], 'avatar': u['avatar']} for u in online_users.values()]
+    emit('admin_user_list_update', {'online_users': users_list})
+
+@socketio.on('admin_unblock_user')
+def handle_admin_unblock_user(data):
+    username = data.get('username', '')
+    if not username:
+        emit('admin_action_result', {'success': False, 'message': 'Username required'})
+        return
+
+    # Remove from blocked list
+    blocked_users[:] = [u for u in blocked_users if u.lower() != username.lower()]
+
+    emit('admin_action_result', {'success': True, 'message': f'{username} has been unblocked'})
+    emit('admin_blocked_update', {'blocked_users': blocked_users})
+
+@socketio.on('admin_kick_user')
+def handle_admin_kick_user(data):
+    username = data.get('username', '')
+    if not username:
+        emit('admin_action_result', {'success': False, 'message': 'Username required'})
+        return
+
+    # Find and kick the user
+    sid_to_kick = None
+    for sid, user_data in online_users.items():
+        if user_data['username'].lower() == username.lower():
+            sid_to_kick = sid
+            break
+
+    if sid_to_kick:
+        # Notify the user they've been kicked
+        emit('user_kicked', {'message': 'You have been kicked by an administrator'}, room=sid_to_kick)
+        # Remove from online users
+        del online_users[sid_to_kick]
+        # Notify all users
+        users_list = [{'username': u['username'], 'avatar': u['avatar']} for u in online_users.values()]
+        emit('online_users_list', {'users': users_list}, broadcast=True)
+        emit('user_left', {'username': username, 'users': [u['username'] for u in online_users.values()]}, broadcast=True)
+
+        emit('admin_action_result', {'success': True, 'message': f'{username} has been kicked'})
+        emit('admin_user_list_update', {'online_users': users_list})
+    else:
+        emit('admin_action_result', {'success': False, 'message': f'{username} is not online'})
+
+@socketio.on('admin_delete_user')
+def handle_admin_delete_user(data):
+    username = data.get('username', '')
+    if not username:
+        emit('admin_action_result', {'success': False, 'message': 'Username required'})
+        return
+
+    # Remove from blocked list
+    blocked_users[:] = [u for u in blocked_users if u.lower() != username.lower()]
+
+    emit('admin_action_result', {'success': True, 'message': f'{username} has been deleted from blocked list'})
+    emit('admin_blocked_update', {'blocked_users': blocked_users})
+
 if __name__ == '__main__':
     print("Starting chat server...")
     print("Server running at http://localhost:5000")
+    print("Admin panel at http://localhost:5000/admin")
     print("\nTo expose to internet, use: ngrok http 5000")
     socketio.run(app, host='0.0.0.0', port=5000, debug=True)
