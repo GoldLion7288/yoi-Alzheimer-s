@@ -3,14 +3,24 @@ from flask_socketio import SocketIO, emit
 from flask_cors import CORS
 from datetime import datetime
 import uuid
+import os
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'your-secret-key-change-this'
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'your-secret-key-change-this')
+
+# Get CORS origins from environment
+cors_origins = os.getenv('CORS_ORIGINS', '*')
+if cors_origins != '*':
+    cors_origins = [origin.strip() for origin in cors_origins.split(',')]
 
 # Enable CORS for your frontend domain
-CORS(app, origins=["*"])  # In production, replace * with your actual frontend URL
+CORS(app, origins=cors_origins if cors_origins != '*' else ["*"])
 
-socketio = SocketIO(app, cors_allowed_origins="*")
+socketio = SocketIO(app, cors_allowed_origins=cors_origins if cors_origins != '*' else "*")
 
 # Store connected users and messages (in-memory, use database for production)
 online_users = {}  # {sid: {'username': name, 'avatar': url}}
@@ -242,8 +252,12 @@ def handle_admin_delete_user(data):
     emit('admin_blocked_update', {'blocked_users': blocked_users})
 
 if __name__ == '__main__':
+    port = int(os.getenv('PORT', 5000))
+    host = os.getenv('HOST', '0.0.0.0')
+    debug = os.getenv('FLASK_DEBUG', 'False').lower() == 'true'
+
     print("Starting chat server...")
-    print("Server running at http://localhost:5000")
-    print("Admin panel at http://localhost:5000/admin")
+    print(f"Server running at http://{host}:{port}")
+    print(f"Admin panel at http://{host}:{port}/admin")
     print("\nTo expose to internet, use: ngrok http 5000")
-    socketio.run(app, host='0.0.0.0', port=5000, debug=True)
+    socketio.run(app, host=host, port=port, debug=debug)

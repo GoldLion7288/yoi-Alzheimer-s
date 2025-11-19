@@ -491,8 +491,10 @@
     <script src="https://unpkg.com/ionicons@5.1.2/dist/ionicons.js"></script>
 
     <script>
-        const BACKEND_URL = 'http://localhost:5000';
-        const ADMIN_PASSWORD = 'makapix2024'; // Change this to your preferred password
+        const BACKEND_URL = window.location.hostname === 'localhost'
+            ? 'http://localhost:5000'
+            : 'https://makapixclub.vercel.app';
+        const ADMIN_PASSWORD = 'pix'; // Change this to your preferred password
 
         let socket = null;
         let isAuthenticated = false;

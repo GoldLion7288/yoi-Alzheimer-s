@@ -1726,8 +1726,11 @@
     <script>
         // IMPORTANT: Change this to your backend URL
         // For local testing: 'http://localhost:5000'
-        // For ngrok: 'https://your-ngrok-url.ngrok.io'
-        const BACKEND_URL = 'http://localhost:5000';
+        // For production: Your backend server URL
+        // Note: Vercel doesn't support WebSockets, so you need a separate backend server
+        const BACKEND_URL = window.location.hostname === 'localhost'
+            ? 'http://localhost:5000'
+            : 'https://makapixclub.vercel.app';
         const DB_NAME = 'YoiChatDB';
         const DB_VERSION = 1;
 
