@@ -29,7 +29,9 @@ def handle_disconnect():
         username = online_users[request.sid]['username']
         del online_users[request.sid]
         usernames = [u['username'] for u in online_users.values()]
+        users_list = [{'username': u['username'], 'avatar': u['avatar']} for u in online_users.values()]
         emit('user_left', {'username': username, 'users': usernames}, broadcast=True)
+        emit('online_users_list', {'users': users_list}, broadcast=True)
     print(f'Client disconnected: {request.sid}')
 
 @socketio.on('join')
@@ -54,6 +56,10 @@ def handle_join(data):
     # Send recent messages to the new user
     emit('message_history', chat_messages[-50:])  # Last 50 messages
 
+    # Send online users list
+    users_list = [{'username': u['username'], 'avatar': u['avatar']} for u in online_users.values()]
+    emit('online_users_list', {'users': users_list})
+
     # Notify all users
     usernames = [u['username'] for u in online_users.values()]
     taken_avatars = [u['avatar'] for u in online_users.values() if u['avatar']]
@@ -63,19 +69,26 @@ def handle_join(data):
         'taken_avatars': taken_avatars
     }, broadcast=True)
 
+    # Broadcast updated online users list to all
+    emit('online_users_list', {'users': users_list}, broadcast=True)
+
 @socketio.on('get_taken_avatars')
 def handle_get_taken_avatars():
     taken_avatars = [u['avatar'] for u in online_users.values() if u['avatar']]
     emit('taken_avatars_list', {'taken_avatars': taken_avatars})
 
+import uuid
+
 @socketio.on('message')
 def handle_message(data):
     user_data = online_users.get(request.sid, {'username': 'Anonymous', 'avatar': ''})
     message = {
+        'id': str(uuid.uuid4()),
         'username': user_data['username'],
         'avatar': user_data['avatar'],
         'text': data.get('text', ''),
-        'timestamp': datetime.now().strftime('%H:%M')
+        'timestamp': datetime.now().strftime('%H:%M'),
+        'replyTo': data.get('replyTo', None)
     }
 
     # Store message

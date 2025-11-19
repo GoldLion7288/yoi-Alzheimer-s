@@ -741,6 +741,343 @@
             box-shadow: 0 0 10px rgba(100, 181, 246, 0.5);
         }
 
+        .avatar-option.taken {
+            opacity: 0.3;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .avatar-option.taken::after {
+            content: '✗';
+            position: absolute;
+            color: #ff6b6b;
+            font-size: 20px;
+        }
+
+        /* Online Users Sidebar */
+        .online-users-toggle {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            background: rgba(100, 181, 246, 0.3);
+            border: 1px solid rgba(100, 181, 246, 0.5);
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 500;
+            transition: all 0.3s ease;
+        }
+
+        .online-users-toggle:hover {
+            background: rgba(100, 181, 246, 0.5);
+            transform: scale(1.1);
+        }
+
+        .online-users-toggle ion-icon {
+            font-size: 24px;
+            color: white;
+        }
+
+        .online-users-toggle .count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ff6b6b;
+            color: white;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+
+        .online-users-sidebar {
+            position: fixed;
+            top: 0;
+            right: -300px;
+            width: 280px;
+            height: 100%;
+            background: rgba(20, 20, 35, 0.98);
+            backdrop-filter: blur(20px);
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 900;
+            transition: right 0.3s ease;
+            padding: 80px 20px 20px;
+            overflow-y: auto;
+        }
+
+        .online-users-sidebar.show {
+            right: 0;
+        }
+
+        .online-users-sidebar h4 {
+            color: #64b5f6;
+            font-size: 16px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .online-users-sidebar .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: #888;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .online-user-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            transition: background 0.2s ease;
+        }
+
+        .online-user-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .online-user-item img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+        }
+
+        .online-user-item .name {
+            color: #e0e0e0;
+            font-size: 14px;
+        }
+
+        .online-user-item .status {
+            width: 8px;
+            height: 8px;
+            background: #4caf50;
+            border-radius: 50%;
+            margin-left: auto;
+        }
+
+        /* Typing Indicator */
+        .typing-indicator {
+            padding: 10px 20px;
+            color: #888;
+            font-size: 12px;
+            font-style: italic;
+            display: none;
+        }
+
+        .typing-indicator.show {
+            display: block;
+        }
+
+        .typing-dots {
+            display: inline-flex;
+            gap: 3px;
+        }
+
+        .typing-dots span {
+            width: 6px;
+            height: 6px;
+            background: #888;
+            border-radius: 50%;
+            animation: typingBounce 1.4s infinite ease-in-out;
+        }
+
+        .typing-dots span:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dots span:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes typingBounce {
+            0%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-6px); }
+        }
+
+        /* Message Reactions */
+        .message-reactions {
+            display: flex;
+            gap: 5px;
+            margin-top: 6px;
+            flex-wrap: wrap;
+        }
+
+        .reaction-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 12px;
+            padding: 2px 8px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .reaction-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .reaction-btn.active {
+            background: rgba(100, 181, 246, 0.3);
+        }
+
+        .reaction-btn .count {
+            color: #888;
+            font-size: 10px;
+        }
+
+        .add-reaction-btn {
+            background: none;
+            border: 1px dashed rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 2px 8px;
+            font-size: 12px;
+            cursor: pointer;
+            color: #888;
+            transition: all 0.2s ease;
+        }
+
+        .add-reaction-btn:hover {
+            border-color: #64b5f6;
+            color: #64b5f6;
+        }
+
+        /* Reply Feature */
+        .reply-preview {
+            display: none;
+            background: rgba(100, 181, 246, 0.1);
+            border-left: 3px solid #64b5f6;
+            padding: 8px 12px;
+            margin: 0 20px 10px;
+            border-radius: 0 8px 8px 0;
+            font-size: 12px;
+        }
+
+        .reply-preview.show {
+            display: block;
+        }
+
+        .reply-preview .reply-to {
+            color: #64b5f6;
+            font-weight: 600;
+        }
+
+        .reply-preview .reply-text {
+            color: #888;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            max-width: 300px;
+        }
+
+        .reply-preview .close-reply {
+            float: right;
+            background: none;
+            border: none;
+            color: #888;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .message-reply-ref {
+            font-size: 11px;
+            color: #64b5f6;
+            background: rgba(100, 181, 246, 0.1);
+            padding: 4px 8px;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            cursor: pointer;
+        }
+
+        .message-reply-ref:hover {
+            background: rgba(100, 181, 246, 0.2);
+        }
+
+        /* Message Actions */
+        .message-actions {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            display: none;
+            gap: 5px;
+        }
+
+        .public-message:hover .message-actions {
+            display: flex;
+        }
+
+        .message-actions button {
+            background: rgba(0, 0, 0, 0.5);
+            border: none;
+            border-radius: 4px;
+            padding: 4px 8px;
+            font-size: 12px;
+            cursor: pointer;
+            color: #888;
+            transition: all 0.2s ease;
+        }
+
+        .message-actions button:hover {
+            background: rgba(0, 0, 0, 0.7);
+            color: #fff;
+        }
+
+        .public-message {
+            position: relative;
+        }
+
+        /* Connection Status */
+        .connection-status {
+            position: fixed;
+            bottom: 80px;
+            left: 20px;
+            background: rgba(20, 20, 35, 0.95);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            display: none;
+            align-items: center;
+            gap: 8px;
+            z-index: 500;
+        }
+
+        .connection-status.show {
+            display: flex;
+        }
+
+        .connection-status.connected {
+            border: 1px solid #4caf50;
+            color: #4caf50;
+        }
+
+        .connection-status.disconnected {
+            border: 1px solid #ff6b6b;
+            color: #ff6b6b;
+        }
+
+        .connection-status .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .connection-status.connected .dot {
+            background: #4caf50;
+        }
+
+        .connection-status.disconnected .dot {
+            background: #ff6b6b;
+        }
+
         /* Client Reviews */
         .review-card {
             background: rgba(255, 255, 255, 0.05);
@@ -830,11 +1167,49 @@
         </div>
     </div>
 
+    <!-- Online Users Toggle Button -->
+    <div class="online-users-toggle" onclick="toggleOnlineUsers()">
+        <ion-icon name="people"></ion-icon>
+        <span class="count" id="onlineCount">0</span>
+    </div>
+
+    <!-- Online Users Sidebar -->
+    <div class="online-users-sidebar" id="onlineUsersSidebar">
+        <button class="close-btn" onclick="toggleOnlineUsers()">&times;</button>
+        <h4><ion-icon name="people"></ion-icon> Online Users</h4>
+        <div id="onlineUsersList">
+            <!-- Online users will appear here -->
+        </div>
+    </div>
+
+    <!-- Connection Status -->
+    <div class="connection-status" id="connectionStatus">
+        <span class="dot"></span>
+        <span class="text">Connected</span>
+    </div>
+
     <!-- Full Screen Chat -->
     <div class="chat-container">
         <!-- Public Messages Display -->
         <div class="public-messages" id="publicMessages">
             <!-- Messages will appear here -->
+        </div>
+
+        <!-- Typing Indicator -->
+        <div class="typing-indicator" id="typingIndicator">
+            <span id="typingUser"></span> is typing
+            <span class="typing-dots">
+                <span></span>
+                <span></span>
+                <span></span>
+            </span>
+        </div>
+
+        <!-- Reply Preview -->
+        <div class="reply-preview" id="replyPreview">
+            <button class="close-reply" onclick="cancelReply()">&times;</button>
+            <div class="reply-to">Replying to <span id="replyToUser"></span></div>
+            <div class="reply-text" id="replyToText"></div>
         </div>
 
         <!-- Emoji Picker -->
@@ -846,8 +1221,8 @@
 
         <!-- Chat Input Form -->
         <div class="chat-input-container">
-            <input type="text" id="messageInput" placeholder="Write a message and press Enter..." onkeypress="handleKeyPress(event)" disabled>
             <button class="emoji-btn" onclick="toggleEmojiPicker()" id="emojiBtn" disabled>😀</button>
+            <input type="text" id="messageInput" placeholder="Write a message and press Enter..." onkeypress="handleKeyPress(event)" oninput="handleTyping()" disabled>
             <button onclick="sendMessage()" id="sendButton" disabled>
                 <ion-icon name="send"></ion-icon>
             </button>
@@ -868,12 +1243,107 @@
         // For local testing: 'http://localhost:5000'
         // For ngrok: 'https://your-ngrok-url.ngrok.io'
         const BACKEND_URL = 'http://localhost:5000';
+        const DB_NAME = 'YoiChatDB';
+        const DB_VERSION = 1;
 
         let socket = null;
         let isConnected = false;
         let username = '';
         let selectedAvatar = '';
-        let userAvatars = {}; // Store avatars for all users
+        let takenAvatars = []; // Store taken avatars
+        let preSocket = null; // Socket for getting taken avatars before joining
+        let db = null; // IndexedDB instance
+        let onlineUsers = []; // Store online users list
+        let typingTimeout = null;
+        let replyingTo = null; // Message being replied to
+        let notificationSound = null;
+
+        // Initialize IndexedDB
+        function initDB() {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.open(DB_NAME, DB_VERSION);
+
+                request.onerror = () => reject(request.error);
+                request.onsuccess = () => {
+                    db = request.result;
+                    resolve(db);
+                };
+
+                request.onupgradeneeded = (event) => {
+                    const database = event.target.result;
+                    if (!database.objectStoreNames.contains('session')) {
+                        database.createObjectStore('session', { keyPath: 'id' });
+                    }
+                };
+            });
+        }
+
+        // Save session to IndexedDB
+        async function saveSession() {
+            if (!db || !username) return;
+
+            const transaction = db.transaction(['session'], 'readwrite');
+            const store = transaction.objectStore('session');
+            store.put({
+                id: 'userSession',
+                username: username,
+                avatar: selectedAvatar,
+                timestamp: Date.now()
+            });
+        }
+
+        // Load session from IndexedDB
+        async function loadSession() {
+            if (!db) return null;
+
+            return new Promise((resolve) => {
+                const transaction = db.transaction(['session'], 'readonly');
+                const store = transaction.objectStore('session');
+                const request = store.get('userSession');
+
+                request.onsuccess = () => {
+                    const session = request.result;
+                    // Session valid for 24 hours
+                    if (session && (Date.now() - session.timestamp) < 24 * 60 * 60 * 1000) {
+                        resolve(session);
+                    } else {
+                        resolve(null);
+                    }
+                };
+
+                request.onerror = () => resolve(null);
+            });
+        }
+
+        // Clear session
+        async function clearSession() {
+            if (!db) return;
+
+            const transaction = db.transaction(['session'], 'readwrite');
+            const store = transaction.objectStore('session');
+            store.delete('userSession');
+        }
+
+        // Create notification sound
+        function createNotificationSound() {
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            return () => {
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+
+                oscillator.frequency.value = 800;
+                oscillator.type = 'sine';
+
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.3);
+            };
+        }
 
         // Avatar options using DiceBear API
         const avatarStyles = ['adventurer', 'avataaars', 'bottts', 'fun-emoji', 'lorelei', 'micah', 'miniavs', 'open-peeps', 'personas', 'pixel-art'];
@@ -899,10 +1369,86 @@
         ];
 
         // Initialize avatars and emojis on page load
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', async function() {
             generateAvatarOptions();
             generateEmojiOptions();
+
+            // Initialize IndexedDB and check for saved session
+            try {
+                await initDB();
+                const session = await loadSession();
+
+                if (session) {
+                    // Restore session
+                    username = session.username;
+                    selectedAvatar = session.avatar;
+
+                    // Hide modal and enable chat
+                    document.getElementById('usernameModal').classList.add('hidden');
+                    document.getElementById('messageInput').disabled = false;
+                    document.getElementById('sendButton').disabled = false;
+                    document.getElementById('emojiBtn').disabled = false;
+
+                    // Connect to server
+                    initChat();
+                } else {
+                    // Connect to get taken avatars for new user
+                    fetchTakenAvatars();
+                }
+            } catch (error) {
+                console.error('IndexedDB error:', error);
+                fetchTakenAvatars();
+            }
+
+            // Initialize notification sound
+            try {
+                notificationSound = createNotificationSound();
+            } catch (e) {
+                console.log('Audio not supported');
+            }
         });
+
+        function fetchTakenAvatars() {
+            preSocket = io(BACKEND_URL, {
+                transports: ['websocket', 'polling']
+            });
+
+            preSocket.on('connect', () => {
+                preSocket.emit('get_taken_avatars');
+            });
+
+            preSocket.on('taken_avatars_list', (data) => {
+                takenAvatars = data.taken_avatars || [];
+                updateAvatarAvailability();
+                preSocket.disconnect();
+            });
+        }
+
+        function updateAvatarAvailability() {
+            const avatarOptions = document.querySelectorAll('.avatar-option');
+            avatarOptions.forEach(img => {
+                const avatarUrl = img.src;
+                if (takenAvatars.includes(avatarUrl)) {
+                    img.classList.add('taken');
+                    img.classList.remove('selected');
+                    // If selected avatar is taken, select first available
+                    if (selectedAvatar === avatarUrl) {
+                        selectedAvatar = '';
+                    }
+                } else {
+                    img.classList.remove('taken');
+                }
+            });
+
+            // Select first available avatar if none selected
+            if (!selectedAvatar) {
+                const firstAvailable = document.querySelector('.avatar-option:not(.taken)');
+                if (firstAvailable) {
+                    firstAvailable.classList.add('selected');
+                    selectedAvatar = firstAvailable.src;
+                }
+            }
+        }
 
         function generateAvatarOptions() {
             const avatarGrid = document.getElementById('avatarGrid');
@@ -972,8 +1518,98 @@
             document.getElementById('emojiBtn').disabled = false;
             document.getElementById('messageInput').focus();
 
+            // Save session to IndexedDB
+            saveSession();
+
             // Connect to server
             initChat();
+        }
+
+        // Toggle online users sidebar
+        function toggleOnlineUsers() {
+            document.getElementById('onlineUsersSidebar').classList.toggle('show');
+        }
+
+        // Update online users list
+        function updateOnlineUsersList(users) {
+            onlineUsers = users;
+            const container = document.getElementById('onlineUsersList');
+            const countEl = document.getElementById('onlineCount');
+
+            countEl.textContent = users.length;
+            container.innerHTML = '';
+
+            users.forEach(user => {
+                const userEl = document.createElement('div');
+                userEl.className = 'online-user-item';
+                const avatarUrl = user.avatar || `https://api.dicebear.com/7.x/initials/svg?seed=${user.username}`;
+                userEl.innerHTML = `
+                    <img src="${avatarUrl}" alt="${escapeHtml(user.username)}">
+                    <span class="name">${escapeHtml(user.username)}</span>
+                    <span class="status"></span>
+                `;
+                container.appendChild(userEl);
+            });
+        }
+
+        // Handle typing indicator
+        function handleTyping() {
+            if (socket && isConnected) {
+                socket.emit('typing');
+            }
+        }
+
+        // Show typing indicator
+        function showTypingIndicator(user) {
+            if (user === username) return;
+
+            const indicator = document.getElementById('typingIndicator');
+            document.getElementById('typingUser').textContent = user;
+            indicator.classList.add('show');
+
+            // Hide after 3 seconds
+            clearTimeout(typingTimeout);
+            typingTimeout = setTimeout(() => {
+                indicator.classList.remove('show');
+            }, 3000);
+        }
+
+        // Reply to message
+        function replyToMessage(msgId, msgUser, msgText) {
+            replyingTo = { id: msgId, user: msgUser, text: msgText };
+            document.getElementById('replyToUser').textContent = msgUser;
+            document.getElementById('replyToText').textContent = msgText;
+            document.getElementById('replyPreview').classList.add('show');
+            document.getElementById('messageInput').focus();
+        }
+
+        // Cancel reply
+        function cancelReply() {
+            replyingTo = null;
+            document.getElementById('replyPreview').classList.remove('show');
+        }
+
+        // Update connection status
+        function updateConnectionStatus(connected) {
+            const statusEl = document.getElementById('connectionStatus');
+            statusEl.classList.add('show');
+
+            if (connected) {
+                statusEl.classList.remove('disconnected');
+                statusEl.classList.add('connected');
+                statusEl.querySelector('.text').textContent = 'Connected';
+            } else {
+                statusEl.classList.remove('connected');
+                statusEl.classList.add('disconnected');
+                statusEl.querySelector('.text').textContent = 'Disconnected';
+            }
+
+            // Hide after 3 seconds if connected
+            if (connected) {
+                setTimeout(() => {
+                    statusEl.classList.remove('show');
+                }, 3000);
+            }
         }
 
         // Emoji functions
@@ -1007,11 +1643,23 @@
                 isConnected = true;
                 socket.emit('join', { username: username, avatar: selectedAvatar });
                 console.log('Connected to chat server as ' + username);
+                updateConnectionStatus(true);
             });
 
             socket.on('disconnect', () => {
                 isConnected = false;
                 console.log('Disconnected from chat server');
+                updateConnectionStatus(false);
+            });
+
+            // Typing indicator
+            socket.on('user_typing', (data) => {
+                showTypingIndicator(data.username);
+            });
+
+            // Online users list
+            socket.on('online_users_list', (data) => {
+                updateOnlineUsersList(data.users);
             });
 
             socket.on('connect_error', (error) => {
@@ -1020,23 +1668,38 @@
 
             // Listen for new messages from server
             socket.on('new_message', (data) => {
-                displayMessage(data.username, data.text, data.timestamp, data.avatar);
+                displayMessage(data.username, data.text, data.timestamp, data.avatar, data);
             });
 
             // Load message history
             socket.on('message_history', (messages) => {
                 messages.forEach(msg => {
-                    displayMessage(msg.username, msg.text, msg.timestamp, msg.avatar);
+                    displayMessage(msg.username, msg.text, msg.timestamp, msg.avatar, msg);
                 });
             });
 
             // User joined/left notifications
             socket.on('user_joined', (data) => {
                 displaySystemMessage(`${data.username} joined the chat`);
+                // Update taken avatars when someone joins
+                if (data.taken_avatars) {
+                    takenAvatars = data.taken_avatars;
+                    updateAvatarAvailability();
+                }
             });
 
             socket.on('user_left', (data) => {
                 displaySystemMessage(`${data.username} left the chat`);
+                // Refresh taken avatars when someone leaves
+                if (socket && isConnected) {
+                    socket.emit('get_taken_avatars');
+                }
+            });
+
+            // Update taken avatars list
+            socket.on('taken_avatars_list', (data) => {
+                takenAvatars = data.taken_avatars || [];
+                updateAvatarAvailability();
             });
 
             // Handle username taken
@@ -1052,6 +1715,23 @@
                 document.getElementById('sendButton').disabled = true;
                 document.getElementById('emojiBtn').disabled = true;
             });
+
+            // Handle avatar taken
+            socket.on('avatar_taken', (data) => {
+                document.getElementById('usernameModal').classList.remove('hidden');
+                const errorDiv = document.getElementById('usernameError');
+                errorDiv.textContent = 'This avatar is already taken. Please choose another.';
+                errorDiv.classList.add('show');
+
+                // Update taken avatars and refresh display
+                takenAvatars = data.taken_avatars || [];
+                updateAvatarAvailability();
+
+                // Disable chat input again
+                document.getElementById('messageInput').disabled = true;
+                document.getElementById('sendButton').disabled = true;
+                document.getElementById('emojiBtn').disabled = true;
+            });
         }
 
         function sendMessage() {
@@ -1059,7 +1739,15 @@
             const text = input.value.trim();
 
             if (text && socket && isConnected) {
-                socket.emit('message', { text: text });
+                const messageData = { text: text };
+
+                // Add reply data if replying
+                if (replyingTo) {
+                    messageData.replyTo = replyingTo;
+                    cancelReply();
+                }
+
+                socket.emit('message', messageData);
                 input.value = '';
             }
         }
@@ -1070,20 +1758,40 @@
             }
         }
 
-        function displayMessage(user, text, time, avatar) {
+        function displayMessage(user, text, time, avatar, msgData = {}) {
             const messagesDiv = document.getElementById('publicMessages');
             const messageDiv = document.createElement('div');
             messageDiv.className = 'public-message';
 
+            const msgId = msgData.id || Date.now() + Math.random();
+            messageDiv.dataset.msgId = msgId;
+
             // Use provided avatar or default
             const avatarUrl = avatar || `https://api.dicebear.com/7.x/initials/svg?seed=${user}`;
+
+            // Build reply reference if exists
+            let replyHtml = '';
+            if (msgData.replyTo) {
+                replyHtml = `
+                    <div class="message-reply-ref" onclick="scrollToMessage('${msgData.replyTo.id}')">
+                        ↩ ${escapeHtml(msgData.replyTo.user)}: ${escapeHtml(msgData.replyTo.text.substring(0, 50))}${msgData.replyTo.text.length > 50 ? '...' : ''}
+                    </div>
+                `;
+            }
 
             messageDiv.innerHTML = `
                 <img src="${avatarUrl}" class="message-avatar" alt="${escapeHtml(user)}">
                 <div class="message-content">
+                    ${replyHtml}
                     <div class="username">${escapeHtml(user)}</div>
                     <div>${escapeHtml(text)}</div>
                     <div class="time">${time}</div>
+                    <div class="message-reactions" id="reactions-${msgId}"></div>
+                </div>
+                <div class="message-actions">
+                    <button onclick="replyToMessage('${msgId}', '${escapeHtml(user)}', '${escapeHtml(text.replace(/'/g, "\\'"))}')" title="Reply">↩</button>
+                    <button onclick="addReaction('${msgId}', '👍')" title="Like">👍</button>
+                    <button onclick="addReaction('${msgId}', '❤️')" title="Love">❤️</button>
                 </div>
             `;
             messagesDiv.appendChild(messageDiv);
@@ -1094,6 +1802,32 @@
             // Remove old messages if too many (keep last 50)
             while (messagesDiv.children.length > 50) {
                 messagesDiv.removeChild(messagesDiv.firstChild);
+            }
+
+            // Play notification sound for other users' messages
+            if (user !== username && notificationSound && document.hidden) {
+                try {
+                    notificationSound();
+                } catch (e) {}
+            }
+        }
+
+        // Scroll to specific message
+        function scrollToMessage(msgId) {
+            const msg = document.querySelector(`[data-msg-id="${msgId}"]`);
+            if (msg) {
+                msg.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                msg.style.background = 'rgba(100, 181, 246, 0.2)';
+                setTimeout(() => {
+                    msg.style.background = '';
+                }, 2000);
+            }
+        }
+
+        // Add reaction to message
+        function addReaction(msgId, emoji) {
+            if (socket && isConnected) {
+                socket.emit('add_reaction', { msgId, emoji });
             }
         }
 
