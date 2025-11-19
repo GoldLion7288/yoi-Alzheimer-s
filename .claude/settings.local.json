@@ -1,7 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "Bash(mv:*)"
+      "Bash(mv:*)",
+      "Bash(pip install:*)",
+      "Bash(if not exist \"d:\\yoi-Alzheimer-s\\templates\" mkdir \"d:\\yoi-Alzheimer-s\\templates\")"
     ],
     "deny": [],
     "ask": []

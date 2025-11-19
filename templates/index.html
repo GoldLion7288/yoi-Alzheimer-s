@@ -741,6 +741,19 @@
             box-shadow: 0 0 10px rgba(100, 181, 246, 0.5);
         }
 
+        .avatar-option.taken {
+            opacity: 0.3;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .avatar-option.taken::after {
+            content: '✗';
+            position: absolute;
+            color: #ff6b6b;
+            font-size: 20px;
+        }
+
         /* Client Reviews */
         .review-card {
             background: rgba(255, 255, 255, 0.05);
@@ -846,8 +859,8 @@
 
         <!-- Chat Input Form -->
         <div class="chat-input-container">
-            <input type="text" id="messageInput" placeholder="Write a message and press Enter..." onkeypress="handleKeyPress(event)" disabled>
             <button class="emoji-btn" onclick="toggleEmojiPicker()" id="emojiBtn" disabled>😀</button>
+            <input type="text" id="messageInput" placeholder="Write a message and press Enter..." onkeypress="handleKeyPress(event)" disabled>
             <button onclick="sendMessage()" id="sendButton" disabled>
                 <ion-icon name="send"></ion-icon>
             </button>
@@ -873,7 +886,8 @@
         let isConnected = false;
         let username = '';
         let selectedAvatar = '';
-        let userAvatars = {}; // Store avatars for all users
+        let takenAvatars = []; // Store taken avatars
+        let preSocket = null; // Socket for getting taken avatars before joining
 
         // Avatar options using DiceBear API
         const avatarStyles = ['adventurer', 'avataaars', 'bottts', 'fun-emoji', 'lorelei', 'micah', 'miniavs', 'open-peeps', 'personas', 'pixel-art'];
@@ -902,7 +916,51 @@
         document.addEventListener('DOMContentLoaded', function() {
             generateAvatarOptions();
             generateEmojiOptions();
+            // Connect to get taken avatars
+            fetchTakenAvatars();
         });
+
+        function fetchTakenAvatars() {
+            preSocket = io(BACKEND_URL, {
+                transports: ['websocket', 'polling']
+            });
+
+            preSocket.on('connect', () => {
+                preSocket.emit('get_taken_avatars');
+            });
+
+            preSocket.on('taken_avatars_list', (data) => {
+                takenAvatars = data.taken_avatars || [];
+                updateAvatarAvailability();
+                preSocket.disconnect();
+            });
+        }
+
+        function updateAvatarAvailability() {
+            const avatarOptions = document.querySelectorAll('.avatar-option');
+            avatarOptions.forEach(img => {
+                const avatarUrl = img.src;
+                if (takenAvatars.includes(avatarUrl)) {
+                    img.classList.add('taken');
+                    img.classList.remove('selected');
+                    // If selected avatar is taken, select first available
+                    if (selectedAvatar === avatarUrl) {
+                        selectedAvatar = '';
+                    }
+                } else {
+                    img.classList.remove('taken');
+                }
+            });
+
+            // Select first available avatar if none selected
+            if (!selectedAvatar) {
+                const firstAvailable = document.querySelector('.avatar-option:not(.taken)');
+                if (firstAvailable) {
+                    firstAvailable.classList.add('selected');
+                    selectedAvatar = firstAvailable.src;
+                }
+            }
+        }
 
         function generateAvatarOptions() {
             const avatarGrid = document.getElementById('avatarGrid');
