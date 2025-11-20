@@ -45,8 +45,6 @@
             line-height: 1.625em;
             position: relative;
             background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
-            background-size: 320% 320%;
-            animation: auroraShift 36s ease alternate infinite;
             min-height: 100vh;
             overflow-x: hidden;
         }
@@ -58,22 +56,19 @@
             top: -20%;
             width: 45vw;
             height: 45vw;
-            background: radial-gradient(circle, rgba(100, 181, 246, 0.35), transparent 60%);
-            filter: blur(40px);
-            opacity: 0.5;
+            background: radial-gradient(circle, rgba(100, 181, 246, 0.2), transparent 60%);
+            filter: blur(60px);
+            opacity: 0.3;
             z-index: -1;
-            animation: floatOrb 36s linear infinite;
             pointer-events: none;
         }
 
         body::before {
             left: -10%;
-            animation-delay: -6s;
         }
 
         body::after {
             right: -10%;
-            animation-delay: -18s;
         }
 
         @keyframes auroraShift {
@@ -120,13 +115,13 @@
         .link {
             text-decoration: none;
             color: #64b5f6;
-            transition: all 0.3s;
+            transition: all 0.15s;
         }
 
         .link:hover {
             text-decoration: none;
             color: #90caf9;
-            transition: all 0.3s;
+            transition: all 0.15s;
         }
 
         .social-links li {
@@ -145,7 +140,7 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 50%;
             position: relative;
-            transition: all 0.3s ease;
+            transition: all 0.15s ease;
         }
 
         .social-links li a:hover {
@@ -160,7 +155,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            transition: all 0.3s;
+            transition: all 0.15s;
             color: #ffffff;
         }
 
@@ -230,7 +225,7 @@
             -webkit-backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 10px;
-            transition: all 0.3s ease;
+            transition: all 0.15s ease;
         }
 
         .interests .icon-box:hover {
@@ -320,7 +315,7 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 15px;
             overflow: hidden;
-            transition: all 0.3s ease;
+            transition: all 0.15s ease;
         }
 
         .blog-entry:hover {
@@ -426,7 +421,7 @@
         .profile-img {
             border: 4px solid rgba(255, 255, 255, 0.2);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-            transition: all 0.3s ease;
+            transition: all 0.15s ease;
         }
 
         .profile-img:hover {
@@ -802,7 +797,7 @@
             background: linear-gradient(135deg, #64b5f6, #42a5f5);
             color: white;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.15s ease;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -928,7 +923,7 @@
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.15s ease;
         }
 
         .username-form button:hover {
@@ -956,7 +951,7 @@
             background: rgba(255, 255, 255, 0.1);
             color: white;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.15s ease;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -999,7 +994,7 @@
             cursor: pointer;
             border-radius: 8px;
             text-align: center;
-            transition: all 0.2s ease;
+            transition: all 0.1s ease;
             animation: emojiPop 0.4s ease both;
         }
 
@@ -1083,7 +1078,7 @@
             border-radius: 50%;
             cursor: pointer;
             border: 2px solid transparent;
-            transition: all 0.2s ease;
+            transition: all 0.1s ease;
         }
 
         .avatar-option:hover {
@@ -1125,7 +1120,7 @@
             justify-content: center;
             cursor: pointer;
             z-index: 500;
-            transition: all 0.3s ease;
+            transition: all 0.15s ease;
             box-shadow: 0 15px 35px rgba(15, 15, 40, 0.7);
             animation: floatPulse 3.5s ease-in-out infinite;
             overflow: hidden;
@@ -1210,7 +1205,7 @@
             padding: 4px 8px;
             border-radius: 6px;
             line-height: 1;
-            transition: all 0.2s ease;
+            transition: all 0.1s ease;
             z-index: 1200;
         }
 
@@ -1315,7 +1310,7 @@
             padding: 2px 8px;
             font-size: 12px;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.1s ease;
             display: flex;
             align-items: center;
             gap: 4px;
@@ -1342,7 +1337,7 @@
             font-size: 12px;
             cursor: pointer;
             color: #888;
-            transition: all 0.2s ease;
+            transition: all 0.1s ease;
         }
 
         .add-reaction-btn:hover {
@@ -1429,7 +1424,7 @@
             font-size: 12px;
             cursor: pointer;
             color: #888;
-            transition: all 0.2s ease;
+            transition: all 0.1s ease;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
         }
 
@@ -1513,7 +1508,7 @@
             border-radius: 15px;
             padding: 25px;
             margin-bottom: 20px;
-            transition: all 0.3s ease;
+            transition: all 0.15s ease;
         }
 
         .review-card:hover {
@@ -1656,21 +1651,19 @@
     </div>
 
     <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
         integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous">
     </script>
-    <script src="https://unpkg.com/ionicons@5.1.2/dist/ionicons.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 
     <!-- Socket.IO Client -->
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
 
     <script>
-        // IMPORTANT: Change this to your backend URL
-        // For local testing: 'http://localhost:5000'
-        // For production: Your backend server URL
-        const BACKEND_URL = window.location.hostname === 'localhost'
-            ? 'http://localhost:5000'
-            : 'https://makapixclub.vercel.app';
+        // Backend URL - connects to local server
+        const BACKEND_URL = 'http://localhost:5000';
         const DB_NAME = 'YoiChatDB';
         const DB_VERSION = 1;
 
