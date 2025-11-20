@@ -45,7 +45,69 @@
             line-height: 1.625em;
             position: relative;
             background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+            background-size: 320% 320%;
+            animation: auroraShift 36s ease alternate infinite;
             min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        body::before,
+        body::after {
+            content: '';
+            position: fixed;
+            top: -20%;
+            width: 45vw;
+            height: 45vw;
+            background: radial-gradient(circle, rgba(100, 181, 246, 0.35), transparent 60%);
+            filter: blur(40px);
+            opacity: 0.5;
+            z-index: -1;
+            animation: floatOrb 36s linear infinite;
+            pointer-events: none;
+        }
+
+        body::before {
+            left: -10%;
+            animation-delay: -6s;
+        }
+
+        body::after {
+            right: -10%;
+            animation-delay: -18s;
+        }
+
+        @keyframes auroraShift {
+            0% {
+                background-position: 0% 0%;
+            }
+
+            50% {
+                background-position: 50% 100%;
+            }
+
+            100% {
+                background-position: 100% 0%;
+            }
+        }
+
+        @keyframes floatOrb {
+            0% {
+                transform: translate3d(0, 0, 0) scale(1);
+                opacity: 0.35;
+            }
+
+            40% {
+                opacity: 0.75;
+            }
+
+            50% {
+                transform: translate3d(5vw, 8vh, 0) scale(1.15);
+            }
+
+            100% {
+                transform: translate3d(-4vw, 4vh, 0) scale(0.9);
+                opacity: 0.45;
+            }
         }
 
         .vertical-center {
@@ -306,12 +368,47 @@
             top: 0;
             left: 0;
             right: 0;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.35);
+            animation: fadeDown 1s ease-out both;
+            overflow: hidden;
         }
 
         .navbar .nav-link {
             color: #ffffff !important;
             font-weight: 600;
             font-size: 1.2em;
+            position: relative;
+            padding-bottom: 6px;
+            transition: color 0.3s ease;
+        }
+
+        .navbar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -30%;
+            width: 160%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #64b5f6, transparent);
+            animation: shimmerSweep 6s linear infinite;
+            opacity: 0.35;
+        }
+
+        .navbar .nav-link::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, #42a5f5, #90caf9);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        .navbar .nav-link:hover::after {
+            transform: scaleX(1);
         }
 
         /* Glass Card Effect */
@@ -377,6 +474,161 @@
             }
         }
 
+        @keyframes fadeDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes floatPulse {
+            0% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-6px);
+            }
+
+            100% {
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes ripplePulse {
+            0% {
+                opacity: 0.7;
+                transform: scale(0.6);
+            }
+
+            70% {
+                opacity: 0;
+            }
+
+            100% {
+                transform: scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        @keyframes shimmerSweep {
+            0% {
+                transform: translateX(-100%);
+            }
+
+            100% {
+                transform: translateX(120%);
+            }
+        }
+
+        @keyframes formFloat {
+            0% {
+                opacity: 0;
+                transform: translateY(25px) scale(0.98);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes glowOutline {
+            0% {
+                box-shadow: 0 15px 25px rgba(100, 181, 246, 0.08), 0 0 0 0 rgba(100, 181, 246, 0.4);
+            }
+
+            50% {
+                box-shadow: 0 25px 35px rgba(100, 181, 246, 0.3), 0 0 30px 0 rgba(100, 181, 246, 0.2);
+            }
+
+            100% {
+                box-shadow: 0 15px 25px rgba(100, 181, 246, 0.08), 0 0 0 0 rgba(100, 181, 246, 0.4);
+            }
+        }
+
+        @keyframes messageDrop {
+            0% {
+                opacity: 0;
+                transform: translate3d(0, 25px, 0) scale(0.98);
+            }
+
+            70% {
+                transform: translate3d(0, -8px, 0) scale(1.02);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translate3d(0, 0, 0) scale(1);
+            }
+        }
+
+        @keyframes cardGlow {
+            0% {
+                box-shadow: 0 15px 35px rgba(15, 15, 40, 0.8);
+            }
+
+            50% {
+                box-shadow: 0 25px 45px rgba(100, 181, 246, 0.25);
+            }
+
+            100% {
+                box-shadow: 0 15px 35px rgba(15, 15, 40, 0.8);
+            }
+        }
+
+        @keyframes subtleFloat {
+            0% {
+                transform: translate3d(0, 0, 0);
+            }
+
+            50% {
+                transform: translate3d(0, -8px, 0);
+            }
+
+            100% {
+                transform: translate3d(0, 0, 0);
+            }
+        }
+
+        @keyframes pulseDot {
+            0% {
+                transform: scale(0.85);
+                opacity: 0.8;
+            }
+
+            50% {
+                transform: scale(1.2);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(0.85);
+                opacity: 0.8;
+            }
+        }
+
+        @keyframes emojiPop {
+            0% {
+                transform: scale(0.6) translateY(15px);
+                opacity: 0;
+            }
+
+            70% {
+                transform: scale(1.08) translateY(-3px);
+            }
+
+            100% {
+                transform: scale(1) translateY(0);
+                opacity: 1;
+            }
+        }
+
         .landing {
             animation: fadeInUp 0.8s ease-out;
         }
@@ -418,6 +670,7 @@
             display: flex;
             flex-direction: column;
             z-index: 100;
+            animation: formFloat 1.1s ease 0.2s both;
         }
 
         /* Public Messages Display - Full Width */
@@ -429,6 +682,21 @@
             flex-direction: column;
             gap: 10px;
             z-index: 1;
+            position: relative;
+            perspective: 1200px;
+        }
+
+        .public-messages::before {
+            content: '';
+            position: fixed;
+            top: 120px;
+            left: 0;
+            right: 0;
+            height: 220px;
+            background: linear-gradient(180deg, rgba(100, 181, 246, 0.08), transparent);
+            filter: blur(45px);
+            opacity: 0.4;
+            pointer-events: none;
         }
 
         .public-messages::-webkit-scrollbar {
@@ -456,9 +724,40 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             color: #e0e0e0;
             font-size: 15px;
-            animation: fadeInUp 0.3s ease-out;
+            animation: cardGlow 7s ease-in-out infinite;
             max-width: 80%;
             align-self: flex-start;
+            position: relative;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            overflow: hidden;
+            transform-origin: left top;
+            transition: transform 0.3s ease;
+        }
+
+        .public-message::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(120deg, rgba(255, 255, 255, 0.08), transparent 60%);
+            mix-blend-mode: screen;
+            opacity: 0;
+            transform: translateX(-30%);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        .public-message:hover {
+            transform: translateY(-3px) scale(1.01);
+        }
+
+        .public-message:hover::before {
+            opacity: 1;
+            transform: translateX(10%);
+        }
+
+        .public-message.message-enter {
+            animation: messageDrop 0.45s ease-out, cardGlow 7s ease-in-out infinite;
         }
 
         .public-message .time {
@@ -507,11 +806,36 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(66, 165, 245, 0.35);
         }
 
         .chat-input-container button:hover {
             transform: scale(1.05);
             box-shadow: 0 4px 15px rgba(100, 181, 246, 0.4);
+        }
+
+        .chat-input-container button:active {
+            transform: scale(0.97);
+        }
+
+        .chat-input-container button::after {
+            content: '';
+            position: absolute;
+            width: 140%;
+            height: 140%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.25), transparent 60%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            opacity: 0;
+            transition: transform 0.4s ease, opacity 0.4s ease;
+        }
+
+        .chat-input-container button:hover::after {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
         }
 
         .chat-input-container button ion-icon {
@@ -637,10 +961,12 @@
             padding: 15px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
             z-index: 1000;
+            transform-origin: bottom right;
         }
 
         .emoji-picker.show {
             display: block;
+            animation: fadeDown 0.35s ease both;
         }
 
         .emoji-grid {
@@ -656,6 +982,15 @@
             border-radius: 8px;
             text-align: center;
             transition: all 0.2s ease;
+            animation: emojiPop 0.4s ease both;
+        }
+
+        .emoji-item:nth-child(3n) {
+            animation-delay: 0.05s;
+        }
+
+        .emoji-item:nth-child(4n) {
+            animation-delay: 0.1s;
         }
 
         .emoji-item:hover {
@@ -675,6 +1010,8 @@
             height: 36px;
             border-radius: 50%;
             flex-shrink: 0;
+            box-shadow: 0 0 15px rgba(100, 181, 246, 0.3);
+            animation: subtleFloat 4.5s ease-in-out infinite;
         }
 
         .public-message .message-content {
@@ -739,6 +1076,7 @@
         .avatar-option.selected {
             border-color: #64b5f6;
             box-shadow: 0 0 10px rgba(100, 181, 246, 0.5);
+            animation: glowOutline 5s ease-in-out infinite;
         }
 
         .avatar-option.taken {
@@ -770,6 +1108,9 @@
             cursor: pointer;
             z-index: 500;
             transition: all 0.3s ease;
+            box-shadow: 0 15px 35px rgba(15, 15, 40, 0.7);
+            animation: floatPulse 3.5s ease-in-out infinite;
+            overflow: hidden;
         }
 
         .online-users-toggle:hover {
@@ -794,6 +1135,15 @@
             font-weight: 600;
         }
 
+        .online-users-toggle::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            border: 1px solid rgba(100, 181, 246, 0.4);
+            animation: ripplePulse 2.8s ease-out infinite;
+        }
+
         .online-users-sidebar {
             position: fixed;
             top: 0;
@@ -804,13 +1154,15 @@
             backdrop-filter: blur(20px);
             border-left: 1px solid rgba(255, 255, 255, 0.1);
             z-index: 1100;
-            transition: right 0.3s ease;
+            transition: right 0.3s ease, box-shadow 0.3s ease;
             padding: 15px 12px 12px;
             overflow-y: auto;
+            box-shadow: 0 0 0 rgba(0, 0, 0, 0);
         }
 
         .online-users-sidebar.show {
             right: 0;
+            box-shadow: -10px 0 30px rgba(0, 0, 0, 0.4);
         }
 
         .online-users-sidebar h4 {
@@ -1241,8 +1593,8 @@
 
         <!-- Chat Input Form -->
         <div class="chat-input-container">
-            <button class="emoji-btn" onclick="toggleEmojiPicker()" id="emojiBtn" disabled>😀</button>
             <input type="text" id="messageInput" placeholder="Write a message and press Enter..." onkeypress="handleKeyPress(event)" oninput="handleTyping()" disabled>
+            <button class="emoji-btn" onclick="toggleEmojiPicker()" id="emojiBtn" disabled>😀</button>
             <button onclick="sendMessage()" id="sendButton" disabled>
                 <ion-icon name="send"></ion-icon>
             </button>
