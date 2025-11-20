@@ -4,7 +4,7 @@ from flask_cors import CORS
 from datetime import datetime
 import uuid
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='.')
 app.config['SECRET_KEY'] = 'makapix-secret-key-2024'
 
 # Enable CORS for all origins
@@ -235,4 +235,4 @@ if __name__ == '__main__':
     print("Server running at: http://localhost:5000")
     print("Admin panel at: http://localhost:5000/admin")
     print("=" * 50)
-    socketio.run(app, host='0.0.0.0', port=5000, debug=True, allow_unsafe_werkzeug=True)
+    socketio.run(app, host='0.0.0.0', port=5000, debug=False, use_reloader=False, allow_unsafe_werkzeug=True)

@@ -3,7 +3,8 @@
     "allow": [
       "Bash(mv:*)",
       "Bash(pip install:*)",
-      "Bash(if not exist \"d:\\yoi-Alzheimer-s\\templates\" mkdir \"d:\\yoi-Alzheimer-s\\templates\")"
+      "Bash(if not exist \"d:\\yoi-Alzheimer-s\\templates\" mkdir \"d:\\yoi-Alzheimer-s\\templates\")",
+      "Bash(dir:*)"
     ],
     "deny": [],
     "ask": []

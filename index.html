@@ -854,10 +854,13 @@
             z-index: 1001;
             align-items: center;
             justify-content: center;
+            opacity: 1;
+            transition: opacity 0.4s ease;
         }
 
         .username-modal.hidden {
             display: none;
+            opacity: 0;
         }
 
         .username-form {
@@ -868,6 +871,21 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             text-align: center;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            animation: formFloat 0.9s ease both;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .username-form::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -40%;
+            width: 80%;
+            height: 100%;
+            background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+            transform: skewX(-20deg);
+            animation: shimmerSweep 3s linear infinite;
         }
 
         .username-form h3 {
@@ -1246,10 +1264,19 @@
             font-size: 12px;
             font-style: italic;
             display: none;
+            border-radius: 30px;
+            background: rgba(20, 20, 35, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+            align-self: flex-start;
+            margin-left: 20px;
         }
 
         .typing-indicator.show {
-            display: block;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            animation: fadeDown 0.35s ease, subtleFloat 4s ease-in-out infinite;
         }
 
         .typing-dots {
@@ -1336,6 +1363,7 @@
 
         .reply-preview.show {
             display: block;
+            animation: fadeDown 0.35s ease;
         }
 
         .reply-preview .reply-to {
@@ -1379,12 +1407,18 @@
             position: absolute;
             top: 5px;
             right: 5px;
-            display: none;
+            display: flex;
             gap: 5px;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(-6px);
+            transition: opacity 0.25s ease, transform 0.25s ease;
         }
 
         .public-message:hover .message-actions {
-            display: flex;
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
         }
 
         .message-actions button {
@@ -1396,6 +1430,7 @@
             cursor: pointer;
             color: #888;
             transition: all 0.2s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
         }
 
         .message-actions button:hover {
@@ -1416,14 +1451,22 @@
             padding: 8px 15px;
             border-radius: 20px;
             font-size: 12px;
-            display: none;
+            display: flex;
             align-items: center;
             gap: 8px;
             z-index: 500;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(12px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+            box-shadow: 0 18px 35px rgba(0, 0, 0, 0.45);
+            animation: subtleFloat 6s ease-in-out infinite;
         }
 
         .connection-status.show {
-            display: flex;
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
         }
 
         .connection-status.connected {
@@ -1440,6 +1483,17 @@
             width: 8px;
             height: 8px;
             border-radius: 50%;
+            position: relative;
+            animation: pulseDot 1.6s ease-in-out infinite;
+        }
+
+        .connection-status .dot::after {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            border: 1px solid currentColor;
+            animation: ripplePulse 1.6s linear infinite;
         }
 
         .connection-status.connected .dot {
@@ -1724,7 +1778,7 @@
         const avatarSeeds = [];
 
         // Generate 18 avatar options
-        for (let i = 1; i <= 18; i++) {
+        for (let i = 1; i <= 18; i++) {                                                                                                                                                                                                                                                                                                                                                                                                                                     
             avatarSeeds.push(`avatar${i}`);
         }
 
@@ -2135,7 +2189,7 @@
         function displayMessage(user, text, time, avatar, msgData = {}) {
             const messagesDiv = document.getElementById('publicMessages');
             const messageDiv = document.createElement('div');
-            messageDiv.className = 'public-message';
+            messageDiv.className = 'public-message message-enter';
 
             const msgId = msgData.id || Date.now() + Math.random();
             messageDiv.dataset.msgId = msgId;
@@ -2169,6 +2223,13 @@
                 </div>
             `;
             messagesDiv.appendChild(messageDiv);
+            const onAnimationEnd = (event) => {
+                if (event.animationName === 'messageDrop') {
+                    messageDiv.classList.remove('message-enter');
+                    messageDiv.removeEventListener('animationend', onAnimationEnd);
+                }
+            };
+            messageDiv.addEventListener('animationend', onAnimationEnd);
 
             // Auto-scroll to bottom
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
@@ -2208,10 +2269,17 @@
         function displaySystemMessage(text) {
             const messagesDiv = document.getElementById('publicMessages');
             const messageDiv = document.createElement('div');
-            messageDiv.className = 'public-message system-message';
+            messageDiv.className = 'public-message system-message message-enter';
             messageDiv.innerHTML = `<div>${escapeHtml(text)}</div>`;
             messagesDiv.appendChild(messageDiv);
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            const onAnimationEnd = (event) => {
+                if (event.animationName === 'messageDrop') {
+                    messageDiv.classList.remove('message-enter');
+                    messageDiv.removeEventListener('animationend', onAnimationEnd);
+                }
+            };
+            messageDiv.addEventListener('animationend', onAnimationEnd);
         }
 
         function escapeHtml(text) {

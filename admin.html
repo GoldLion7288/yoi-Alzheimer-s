@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Makapix Club</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+            min-height: 100vh;
+            color: #e0e0e0;
+            padding: 20px;
+        }
+        .container { max-width: 800px; margin: 0 auto; }
+        h1 {
+            text-align: center;
+            color: #64b5f6;
+            margin-bottom: 30px;
+        }
+        .login-box, .admin-panel {
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+        .hidden { display: none; }
+        input, button {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.05);
+            color: #e0e0e0;
+            font-size: 14px;
+        }
+        button {
+            background: linear-gradient(135deg, #64b5f6, #42a5f5);
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        button:hover { opacity: 0.9; }
+        .btn-danger { background: linear-gradient(135deg, #ff6b6b, #ee5a5a); }
+        .btn-warning { background: linear-gradient(135deg, #ffa726, #fb8c00); }
+        .section { margin-bottom: 25px; }
+        .section h3 { color: #64b5f6; margin-bottom: 15px; }
+        .user-item, .blocked-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+        .user-item img { width: 30px; height: 30px; border-radius: 50%; margin-right: 10px; }
+        .user-info { display: flex; align-items: center; flex: 1; }
+        .actions { display: flex; gap: 8px; }
+        .actions button { width: auto; padding: 6px 12px; font-size: 12px; }
+        .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 20px; }
+        .stat-box {
+            background: rgba(100,181,246,0.1);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .stat-box .number { font-size: 24px; font-weight: bold; color: #64b5f6; }
+        .stat-box .label { font-size: 12px; color: #888; }
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 8px;
+            background: #4caf50;
+            color: white;
+            display: none;
+        }
+        .toast.error { background: #ff6b6b; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Admin Panel</h1>
+
+        <div class="login-box" id="loginBox">
+            <h3>Login</h3>
+            <input type="password" id="passwordInput" placeholder="Enter admin password" onkeypress="if(event.key==='Enter')login()">
+            <button onclick="login()">Login</button>
+        </div>
+
+        <div class="admin-panel hidden" id="adminPanel">
+            <div class="stats">
+                <div class="stat-box">
+                    <div class="number" id="onlineCount">0</div>
+                    <div class="label">Online Users</div>
+                </div>
+                <div class="stat-box">
+                    <div class="number" id="blockedCount">0</div>
+                    <div class="label">Blocked Users</div>
+                </div>
+                <div class="stat-box">
+                    <div class="number" id="messageCount">0</div>
+                    <div class="label">Messages</div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>Online Users</h3>
+                <div id="onlineUsersList"></div>
+            </div>
+
+            <div class="section">
+                <h3>Blocked Users</h3>
+                <div id="blockedUsersList"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <script>
+        const BACKEND_URL = window.location.hostname === 'localhost'
+            ? 'http://localhost:5000'
+            : 'https://makapixclub.vercel.app';
+        const ADMIN_PASSWORD = 'pix';
+
+        let socket = null;
+
+        function login() {
+            const password = document.getElementById('passwordInput').value;
+            if (password === ADMIN_PASSWORD) {
+                document.getElementById('loginBox').classList.add('hidden');
+                document.getElementById('adminPanel').classList.remove('hidden');
+                connectSocket();
+            } else {
+                showToast('Wrong password', true);
+            }
+        }
+
+        function connectSocket() {
+            socket = io(BACKEND_URL, { transports: ['websocket', 'polling'] });
+
+            socket.on('connect', () => {
+                socket.emit('admin_get_data');
+            });
+
+            socket.on('admin_data', (data) => {
+                updateStats(data);
+                updateOnlineUsers(data.online_users);
+                updateBlockedUsers(data.blocked_users);
+            });
+
+            socket.on('admin_user_list_update', (data) => {
+                updateOnlineUsers(data.online_users);
+                document.getElementById('onlineCount').textContent = data.online_users.length;
+            });
+
+            socket.on('admin_blocked_update', (data) => {
+                updateBlockedUsers(data.blocked_users);
+                document.getElementById('blockedCount').textContent = data.blocked_users.length;
+            });
+
+            socket.on('admin_action_result', (data) => {
+                showToast(data.message, !data.success);
+            });
+
+            socket.on('online_users_list', (data) => {
+                updateOnlineUsers(data.users);
+                document.getElementById('onlineCount').textContent = data.users.length;
+            });
+        }
+
+        function updateStats(data) {
+            document.getElementById('onlineCount').textContent = data.online_users.length;
+            document.getElementById('blockedCount').textContent = data.blocked_users.length;
+            document.getElementById('messageCount').textContent = data.message_count;
+        }
+
+        function updateOnlineUsers(users) {
+            const container = document.getElementById('onlineUsersList');
+            if (users.length === 0) {
+                container.innerHTML = '<p style="color:#888;text-align:center;">No users online</p>';
+                return;
+            }
+            container.innerHTML = users.map(user => `
+                <div class="user-item">
+                    <div class="user-info">
+                        <img src="${user.avatar || 'https://api.dicebear.com/7.x/initials/svg?seed=' + user.username}" alt="">
+                        <span>${user.username}</span>
+                    </div>
+                    <div class="actions">
+                        <button class="btn-warning" onclick="kickUser('${user.username}')">Kick</button>
+                        <button class="btn-danger" onclick="blockUser('${user.username}')">Block</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updateBlockedUsers(users) {
+            const container = document.getElementById('blockedUsersList');
+            if (users.length === 0) {
+                container.innerHTML = '<p style="color:#888;text-align:center;">No blocked users</p>';
+                return;
+            }
+            container.innerHTML = users.map(username => `
+                <div class="blocked-item">
+                    <span>${username}</span>
+                    <div class="actions">
+                        <button onclick="unblockUser('${username}')">Unblock</button>
+                        <button class="btn-danger" onclick="deleteUser('${username}')">Delete</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function kickUser(username) {
+            if (confirm(`Kick ${username}?`)) {
+                socket.emit('admin_kick_user', { username });
+            }
+        }
+
+        function blockUser(username) {
+            if (confirm(`Block ${username}?`)) {
+                socket.emit('admin_block_user', { username });
+            }
+        }
+
+        function unblockUser(username) {
+            socket.emit('admin_unblock_user', { username });
+        }
+
+        function deleteUser(username) {
+            if (confirm(`Delete ${username} from blocked list?`)) {
+                socket.emit('admin_delete_user', { username });
+            }
+        }
+
+        function showToast(message, isError = false) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = 'toast' + (isError ? ' error' : '');
+            toast.style.display = 'block';
+            setTimeout(() => { toast.style.display = 'none'; }, 3000);
+        }
+    </script>
+</body>
+</html>
